@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Калькулятор судових витрат</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Source+Serif+4:opsz,wght@8..60,300;400;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --ink: #1a1a2e;
+      --ink-light: #3d3d5c;
+      --parchment: #f5f0e8;
+      --parchment-dark: #ede5d0;
+      --gold: #b8962e;
+      --gold-light: #d4af5a;
+      --gold-pale: #f0e0a8;
+      --costs-bg: #1a2e1a;
+      --costs-fg: #c8e6c8;
+      --costs-accent: #4caf7d;
+      --result-bg: #0d1b2a;
+      --result-fg: #b8d4f0;
+      --result-accent: #4a90d9;
+      --border: rgba(184,150,46,0.3);
+      --shadow: 0 8px 40px rgba(26,26,46,0.15);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Source Serif 4', Georgia, serif;
+      background: var(--parchment);
+      color: var(--ink);
+      min-height: 100vh;
+      padding: 2rem 1rem 4rem;
+      background-image:
+        radial-gradient(ellipse at 20% 10%, rgba(184,150,46,0.06) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 90%, rgba(26,26,46,0.05) 0%, transparent 50%);
+    }
+
+    .seal-header {
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+    .seal-icon {
+      width: 72px; height: 72px;
+      margin: 0 auto 1rem;
+      background: var(--ink);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2rem;
+      box-shadow: 0 0 0 4px var(--gold), 0 0 0 8px rgba(184,150,46,0.15);
+    }
+    h1 {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(1.5rem, 4vw, 2.2rem);
+      font-weight: 700;
+      color: var(--ink);
+      letter-spacing: 0.02em;
+      line-height: 1.2;
+    }
+    .subtitle {
+      margin-top: 0.4rem;
+      font-size: 0.9rem;
+      color: var(--ink-light);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      font-weight: 300;
+    }
+    .divider {
+      width: 120px; height: 2px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+      margin: 1rem auto 0;
+    }
+
+    .card {
+      max-width: 680px;
+      margin: 0 auto;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    /* ---- Claim section ---- */
+    .section-claim {
+      padding: 2rem 2.5rem;
+      background: #fff;
+    }
+
+    /* ---- Costs section ---- */
+    .section-costs {
+      padding: 2rem 2.5rem;
+      background: var(--costs-bg);
+      border-top: 3px solid var(--costs-accent);
+    }
+    .section-costs .field-label { color: var(--costs-fg); }
+    .section-costs .field-hint  { color: rgba(200,230,200,0.55); }
+
+    .field-group { margin-bottom: 1.6rem; }
+    .field-label {
+      display: block;
+      font-family: 'Playfair Display', serif;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--ink);
+      margin-bottom: 0.5rem;
+      letter-spacing: 0.01em;
+    }
+    .field-hint {
+      display: block;
+      font-size: 0.78rem;
+      color: var(--ink-light);
+      margin-bottom: 0.5rem;
+      font-style: italic;
+    }
+
+    .input-wrap {
+      position: relative;
+      display: flex; align-items: center;
+    }
+    .currency-sign {
+      position: absolute; left: 14px;
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem; font-weight: 600;
+      color: var(--gold);
+      pointer-events: none;
+      user-select: none;
+    }
+    input[type="number"] {
+      width: 100%;
+      padding: 0.75rem 1rem 0.75rem 2.4rem;
+      font-family: 'Source Serif 4', serif;
+      font-size: 1.05rem;
+      border: 1.5px solid var(--parchment-dark);
+      border-radius: 2px;
+      background: var(--parchment);
+      color: var(--ink);
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      -moz-appearance: textfield;
+    }
+    input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; }
+    input[type="number"]:focus {
+      border-color: var(--gold);
+      box-shadow: 0 0 0 3px rgba(184,150,46,0.12);
+      background: #fff;
+    }
+    .section-costs input[type="number"] {
+      background: rgba(255,255,255,0.07);
+      border-color: rgba(76,175,125,0.35);
+      color: var(--costs-fg);
+    }
+    .section-costs input[type="number"]:focus {
+      border-color: var(--costs-accent);
+      box-shadow: 0 0 0 3px rgba(76,175,125,0.15);
+      background: rgba(255,255,255,0.1);
+    }
+    .section-costs .currency-sign { color: var(--costs-accent); }
+
+    /* ---- Result section ---- */
+    .section-result {
+      padding: 0 2.5rem 2rem;
+      background: var(--result-bg);
+      display: none;
+    }
+    .section-result.visible { display: block; }
+
+    .result-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem;
+      color: var(--result-fg);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      padding: 1.4rem 0 1rem;
+      border-bottom: 1px solid rgba(74,144,217,0.2);
+      margin-bottom: 1.4rem;
+      display: flex; align-items: center; gap: 0.6rem;
+    }
+    .result-title::before {
+      content: '';
+      display: inline-block;
+      width: 3px; height: 1.1em;
+      background: var(--result-accent);
+      border-radius: 2px;
+    }
+
+    .calc-step {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(74,144,217,0.15);
+      border-left: 3px solid var(--result-accent);
+      border-radius: 2px;
+      padding: 1rem 1.2rem;
+      margin-bottom: 0.9rem;
+      animation: fadeIn 0.4s ease both;
+    }
+    .calc-step:nth-child(2) { animation-delay: 0.1s; }
+    .calc-step:nth-child(3) { animation-delay: 0.2s; }
+    .calc-step:nth-child(4) { animation-delay: 0.3s; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .step-label {
+      font-size: 0.75rem;
+      color: rgba(184,212,240,0.55);
+      text-transform: uppercase;
+      letter-spacing: 0.09em;
+      margin-bottom: 0.35rem;
+    }
+    .step-formula {
+      font-family: 'Source Serif 4', serif;
+      font-size: 0.92rem;
+      color: rgba(184,212,240,0.8);
+      margin-bottom: 0.3rem;
+      font-style: italic;
+    }
+    .step-value {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--result-fg);
+    }
+    .step-value .highlight { color: var(--result-accent); }
+
+    .final-box {
+      margin-top: 1.2rem;
+      padding: 1.4rem 1.6rem;
+      background: linear-gradient(135deg, rgba(74,144,217,0.12), rgba(74,144,217,0.05));
+      border: 1.5px solid var(--result-accent);
+      border-radius: 2px;
+      animation: fadeIn 0.5s 0.35s ease both;
+    }
+    .final-label {
+      font-size: 0.78rem;
+      color: rgba(184,212,240,0.55);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 0.5rem;
+    }
+    .final-amount {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      font-weight: 700;
+      color: #fff;
+      line-height: 1;
+    }
+    .final-amount .currency { color: var(--result-accent); font-size: 1.3rem; margin-right: 4px; }
+    .final-sub {
+      margin-top: 0.5rem;
+      font-size: 0.82rem;
+      color: rgba(184,212,240,0.5);
+      font-style: italic;
+    }
+
+    .error-msg {
+      display: none;
+      padding: 0.65rem 1rem;
+      background: rgba(220,60,60,0.12);
+      border: 1px solid rgba(220,60,60,0.35);
+      border-radius: 2px;
+      color: #f4a0a0;
+      font-size: 0.85rem;
+      margin-top: 0.5rem;
+    }
+    .error-msg.visible { display: block; }
+
+    .footer-note {
+      max-width: 680px;
+      margin: 1.5rem auto 0;
+      text-align: center;
+      font-size: 0.75rem;
+      color: var(--ink-light);
+      font-style: italic;
+      opacity: 0.65;
+    }
+
+    @media (max-width: 480px) {
+      .section-claim, .section-costs, .section-result { padding-left: 1.3rem; padding-right: 1.3rem; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="seal-header">
+  <div class="seal-icon">⚖️</div>
+  <h1>Калькулятор судових витрат</h1>
+  <p class="subtitle">Пропорційний розподіл відповідно до ЦПК України</p>
+  <div class="divider"></div>
+</header>
+
+<div class="card">
+
+  <!-- CLAIM SECTION -->
+  <div class="section-claim">
+
+    <div class="field-group">
+      <label class="field-label" for="claimed">Сума заявленої позовної вимоги</label>
+      <span class="field-hint">Загальна сума, яку просить стягнути позивач</span>
+      <div class="input-wrap">
+        <span class="currency-sign">₴</span>
+        <input type="number" id="claimed" min="0" step="0.01" placeholder="0.00" oninput="calculate()" />
+      </div>
+    </div>
+
+    <div class="field-group">
+      <label class="field-label" for="satisfied">Сума задоволеної позовної вимоги</label>
+      <span class="field-hint">Сума, яку суд задовольняє фактично</span>
+      <div class="input-wrap">
+        <span class="currency-sign">₴</span>
+        <input type="number" id="satisfied" min="0" step="0.01" placeholder="0.00" oninput="calculate()" />
+      </div>
+      <div class="error-msg" id="errorMsg">⚠ Задоволена сума не може перевищувати заявлену позовну вимогу</div>
+    </div>
+
+  </div>
+
+  <!-- COSTS SECTION -->
+  <div class="section-costs">
+    <div class="field-group" style="margin-bottom:0">
+      <label class="field-label" for="costs">Сума заявлених судових витрат</label>
+      <span class="field-hint">Витрати, які просить відшкодувати сторона (судовий збір, послуги адвоката тощо)</span>
+      <div class="input-wrap">
+        <span class="currency-sign">₴</span>
+        <input type="number" id="costs" min="0" step="0.01" placeholder="0.00" oninput="calculate()" />
+      </div>
+    </div>
+  </div>
+
+  <!-- RESULT SECTION -->
+  <div class="section-result" id="resultSection">
+
+    <div class="result-title">Розрахунок судових витрат</div>
+
+    <div class="calc-step" id="step1">
+      <div class="step-label">Крок 1 — Відсоток задоволення позову</div>
+      <div class="step-formula" id="formula1"></div>
+      <div class="step-value" id="value1"></div>
+    </div>
+
+    <div class="calc-step" id="step2">
+      <div class="step-label">Крок 2 — Сума заявлених судових витрат</div>
+      <div class="step-formula" id="formula2"></div>
+      <div class="step-value" id="value2"></div>
+    </div>
+
+    <div class="calc-step" id="step3">
+      <div class="step-label">Крок 3 — Пропорційна сума до задоволення</div>
+      <div class="step-formula" id="formula3"></div>
+      <div class="step-value" id="value3"></div>
+    </div>
+
+    <div class="final-box">
+      <div class="final-label">Сума судових витрат до задоволення</div>
+      <div class="final-amount"><span class="currency">₴</span><span id="finalAmount"></span></div>
+      <div class="final-sub" id="finalSub"></div>
+    </div>
+
+  </div>
+
+</div>
+
+<p class="footer-note">
+  Розрахунок відповідно до ст. 141 ЦПК України — судові витрати розподіляються пропорційно до задоволених вимог.
+</p>
+
+<script>
+  function fmt(n) {
+    return new Intl.NumberFormat('uk-UA', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    }).format(n);
+  }
+
+  function calculate() {
+    const claimed   = parseFloat(document.getElementById('claimed').value)   || 0;
+    const satisfied = parseFloat(document.getElementById('satisfied').value) || 0;
+    const costs     = parseFloat(document.getElementById('costs').value)     || 0;
+
+    const resultSection = document.getElementById('resultSection');
+    const errorMsg      = document.getElementById('errorMsg');
+
+    // Validation
+    if (satisfied > claimed && claimed > 0) {
+      errorMsg.classList.add('visible');
+      resultSection.classList.remove('visible');
+      return;
+    }
+    errorMsg.classList.remove('visible');
+
+    // Need all three values > 0
+    if (claimed <= 0 || costs <= 0) {
+      resultSection.classList.remove('visible');
+      return;
+    }
+
+    // ---- Calculations ----
+    const pct = claimed > 0 ? (satisfied / claimed) * 100 : 0;
+    const costsToSatisfy = costs * (pct / 100);
+
+    // Step 1
+    document.getElementById('formula1').textContent =
+      `(Задоволено ÷ Заявлено) × 100 = (${fmt(satisfied)} ÷ ${fmt(claimed)}) × 100`;
+    document.getElementById('value1').innerHTML =
+      `<span class="highlight">${fmt(pct)} %</span>`;
+
+    // Step 2
+    document.getElementById('formula2').textContent =
+      `Заявлені судові витрати = ₴ ${fmt(costs)}`;
+    document.getElementById('value2').innerHTML =
+      `<span class="highlight">₴ ${fmt(costs)}</span>`;
+
+    // Step 3
+    document.getElementById('formula3').textContent =
+      `₴ ${fmt(costs)} × ${fmt(pct)} % = ₴ ${fmt(costs)} × ${(pct/100).toFixed(6)}`;
+    document.getElementById('value3').innerHTML =
+      `<span class="highlight">₴ ${fmt(costsToSatisfy)}</span>`;
+
+    // Final
+    document.getElementById('finalAmount').textContent = fmt(costsToSatisfy);
+
+    let sub = '';
+    if (pct === 100) {
+      sub = 'Позов задоволено повністю — судові витрати відшкодовуються в повному обсязі.';
+    } else if (pct === 0) {
+      sub = 'Позов не задоволено — судові витрати не відшкодовуються.';
+    } else {
+      sub = `Позов задоволено на ${fmt(pct)} % — судові витрати відшкодовуються пропорційно.`;
+    }
+    document.getElementById('finalSub').textContent = sub;
+
+    resultSection.classList.add('visible');
+  }
+</script>
+
+</body>
+</html>
