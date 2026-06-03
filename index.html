@@ -13,7 +13,6 @@
       --parchment-dark: #ede5d0;
       --gold: #b8962e;
       --gold-light: #d4af5a;
-      --gold-pale: #f0e0a8;
       --costs-bg: #1a2e1a;
       --costs-fg: #c8e6c8;
       --costs-accent: #4caf7d;
@@ -37,10 +36,8 @@
         radial-gradient(ellipse at 80% 90%, rgba(26,26,46,0.05) 0%, transparent 50%);
     }
 
-    .seal-header {
-      text-align: center;
-      margin-bottom: 2.5rem;
-    }
+    /* HEADER */
+    .seal-header { text-align: center; margin-bottom: 2.5rem; }
     .seal-icon {
       width: 72px; height: 72px;
       margin: 0 auto 1rem;
@@ -72,6 +69,7 @@
       margin: 1rem auto 0;
     }
 
+    /* CARD */
     .card {
       max-width: 680px;
       margin: 0 auto;
@@ -82,13 +80,10 @@
       overflow: hidden;
     }
 
-    /* ---- Claim section ---- */
-    .section-claim {
-      padding: 2rem 2.5rem;
-      background: #fff;
-    }
+    /* SECTION CLAIM */
+    .section-claim { padding: 2rem 2.5rem; background: #fff; }
 
-    /* ---- Costs section ---- */
+    /* SECTION COSTS */
     .section-costs {
       padding: 2rem 2.5rem;
       background: var(--costs-bg);
@@ -96,7 +91,19 @@
     }
     .section-costs .field-label { color: var(--costs-fg); }
     .section-costs .field-hint  { color: rgba(200,230,200,0.55); }
+    .section-costs .currency-sign { color: var(--costs-accent); }
+    .section-costs input[type="number"] {
+      background: rgba(255,255,255,0.07);
+      border-color: rgba(76,175,125,0.35);
+      color: var(--costs-fg);
+    }
+    .section-costs input[type="number"]:focus {
+      border-color: var(--costs-accent);
+      box-shadow: 0 0 0 3px rgba(76,175,125,0.15);
+      background: rgba(255,255,255,0.1);
+    }
 
+    /* FIELDS */
     .field-group { margin-bottom: 1.6rem; }
     .field-label {
       display: block;
@@ -114,18 +121,13 @@
       margin-bottom: 0.5rem;
       font-style: italic;
     }
-
-    .input-wrap {
-      position: relative;
-      display: flex; align-items: center;
-    }
+    .input-wrap { position: relative; display: flex; align-items: center; }
     .currency-sign {
       position: absolute; left: 14px;
       font-family: 'Playfair Display', serif;
       font-size: 1rem; font-weight: 600;
       color: var(--gold);
-      pointer-events: none;
-      user-select: none;
+      pointer-events: none; user-select: none;
     }
     input[type="number"] {
       width: 100%;
@@ -147,19 +149,61 @@
       box-shadow: 0 0 0 3px rgba(184,150,46,0.12);
       background: #fff;
     }
-    .section-costs input[type="number"] {
-      background: rgba(255,255,255,0.07);
-      border-color: rgba(76,175,125,0.35);
-      color: var(--costs-fg);
-    }
-    .section-costs input[type="number"]:focus {
-      border-color: var(--costs-accent);
-      box-shadow: 0 0 0 3px rgba(76,175,125,0.15);
-      background: rgba(255,255,255,0.1);
-    }
-    .section-costs .currency-sign { color: var(--costs-accent); }
 
-    /* ---- Result section ---- */
+    /* ERROR */
+    .error-msg {
+      display: none;
+      padding: 0.65rem 1rem;
+      background: rgba(220,60,60,0.12);
+      border: 1px solid rgba(220,60,60,0.35);
+      border-radius: 2px;
+      color: #c0392b;
+      font-size: 0.85rem;
+      margin-top: 0.5rem;
+    }
+    .error-msg.visible { display: block; }
+
+    /* BUTTONS */
+    .btn-calc {
+      display: block;
+      width: 100%;
+      margin-top: 1.5rem;
+      padding: 0.9rem 1.5rem;
+      background: linear-gradient(135deg, #2c5f2e, #4caf7d);
+      color: #fff;
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      border: none;
+      border-radius: 2px;
+      cursor: pointer;
+      transition: opacity 0.2s, transform 0.1s, box-shadow 0.2s;
+      box-shadow: 0 3px 14px rgba(76,175,125,0.3);
+    }
+    .btn-calc:hover { opacity: 0.9; box-shadow: 0 5px 20px rgba(76,175,125,0.4); }
+    .btn-calc:active { transform: scale(0.99); }
+
+    .btn-print {
+      display: block;
+      width: 100%;
+      margin-top: 1.2rem;
+      padding: 0.82rem 1.5rem;
+      background: transparent;
+      color: var(--result-accent);
+      font-family: 'Playfair Display', serif;
+      font-size: 0.93rem;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+      border: 1.5px solid var(--result-accent);
+      border-radius: 2px;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+    }
+    .btn-print:hover { background: rgba(74,144,217,0.12); color: #fff; }
+    .btn-print::before { content: '🖨 '; }
+
+    /* RESULT SECTION */
     .section-result {
       padding: 0 2.5rem 2rem;
       background: var(--result-bg);
@@ -256,18 +300,7 @@
       font-style: italic;
     }
 
-    .error-msg {
-      display: none;
-      padding: 0.65rem 1rem;
-      background: rgba(220,60,60,0.12);
-      border: 1px solid rgba(220,60,60,0.35);
-      border-radius: 2px;
-      color: #f4a0a0;
-      font-size: 0.85rem;
-      margin-top: 0.5rem;
-    }
-    .error-msg.visible { display: block; }
-
+    /* FOOTER */
     .footer-note {
       max-width: 680px;
       margin: 1.5rem auto 0;
@@ -280,6 +313,81 @@
 
     @media (max-width: 480px) {
       .section-claim, .section-costs, .section-result { padding-left: 1.3rem; padding-right: 1.3rem; }
+    }
+
+    /* ===================== PRINT STYLES ===================== */
+    @media print {
+      body {
+        background: #fff !important;
+        color: #000 !important;
+        padding: 0 !important;
+        font-family: 'Times New Roman', Times, serif !important;
+        background-image: none !important;
+      }
+      .seal-header { margin-bottom: 1rem; }
+      .seal-icon { display: none; }
+      h1 { font-size: 18pt; color: #000 !important; }
+      .subtitle { color: #444 !important; font-size: 9pt; }
+      .divider { background: #000 !important; }
+
+      .card { box-shadow: none !important; border: 1px solid #999 !important; border-radius: 0 !important; max-width: 100% !important; }
+
+      .section-claim { background: #fff !important; padding: 12pt 16pt 8pt !important; }
+      .input-wrap { display: none !important; }
+      .field-hint { display: none !important; }
+      .field-label { color: #000 !important; font-size: 10pt; margin-bottom: 2pt; }
+      .field-group { margin-bottom: 8pt; }
+      .field-group::after {
+        display: block; font-size: 12pt; font-weight: bold;
+        color: #000; padding: 3pt 0; border-bottom: 1px solid #ddd;
+        content: attr(data-print);
+      }
+
+      .section-costs {
+        background: #f0f0f0 !important;
+        border-top: 2px solid #333 !important;
+        padding: 10pt 16pt !important;
+      }
+      .section-costs .field-label { color: #000 !important; }
+
+      .btn-calc, .btn-print, .error-msg { display: none !important; }
+
+      .section-result {
+        background: #fff !important;
+        border-top: 2px solid #333 !important;
+        display: block !important;
+        padding: 12pt 16pt !important;
+      }
+      .result-title { color: #000 !important; border-bottom: 1px solid #999 !important; font-size: 11pt; }
+      .result-title::before { background: #333 !important; }
+
+      .calc-step {
+        background: #f8f8f8 !important;
+        border: 1px solid #ccc !important;
+        border-left: 3px solid #333 !important;
+        border-radius: 0 !important;
+        padding: 7pt 10pt !important;
+        margin-bottom: 6pt !important;
+        animation: none !important;
+        page-break-inside: avoid;
+      }
+      .step-label { color: #555 !important; font-size: 8pt; }
+      .step-formula { color: #333 !important; font-size: 10pt; }
+      .step-value { color: #000 !important; font-size: 12pt; }
+      .step-value .highlight { color: #000 !important; font-weight: bold; }
+
+      .final-box {
+        background: #efefef !important;
+        border: 2px solid #333 !important;
+        border-radius: 0 !important;
+        animation: none !important;
+        page-break-inside: avoid;
+      }
+      .final-label { color: #444 !important; font-size: 8pt; }
+      .final-amount { color: #000 !important; font-size: 20pt; }
+      .final-amount .currency { color: #000 !important; }
+      .final-sub { color: #444 !important; font-size: 9pt; }
+      .footer-note { color: #555 !important; font-size: 8pt; margin-top: 10pt; }
     }
   </style>
 </head>
@@ -296,58 +404,56 @@
 
   <!-- CLAIM SECTION -->
   <div class="section-claim">
-
-    <div class="field-group">
+    <div class="field-group" id="group-claimed">
       <label class="field-label" for="claimed">Сума заявленої позовної вимоги</label>
       <span class="field-hint">Загальна сума, яку просить стягнути позивач</span>
       <div class="input-wrap">
         <span class="currency-sign">₴</span>
-        <input type="number" id="claimed" min="0" step="0.01" placeholder="0.00" oninput="calculate()" />
+        <input type="number" id="claimed" min="0" step="0.01" placeholder="0.00" />
       </div>
     </div>
 
-    <div class="field-group">
+    <div class="field-group" id="group-satisfied" style="margin-bottom:0">
       <label class="field-label" for="satisfied">Сума задоволеної позовної вимоги</label>
       <span class="field-hint">Сума, яку суд задовольняє фактично</span>
       <div class="input-wrap">
         <span class="currency-sign">₴</span>
-        <input type="number" id="satisfied" min="0" step="0.01" placeholder="0.00" oninput="calculate()" />
+        <input type="number" id="satisfied" min="0" step="0.01" placeholder="0.00" />
       </div>
       <div class="error-msg" id="errorMsg">⚠ Задоволена сума не може перевищувати заявлену позовну вимогу</div>
     </div>
-
   </div>
 
   <!-- COSTS SECTION -->
   <div class="section-costs">
-    <div class="field-group" style="margin-bottom:0">
+    <div class="field-group" id="group-costs" style="margin-bottom:0">
       <label class="field-label" for="costs">Сума заявлених судових витрат</label>
       <span class="field-hint">Витрати, які просить відшкодувати сторона (судовий збір, послуги адвоката тощо)</span>
       <div class="input-wrap">
         <span class="currency-sign">₴</span>
-        <input type="number" id="costs" min="0" step="0.01" placeholder="0.00" oninput="calculate()" />
+        <input type="number" id="costs" min="0" step="0.01" placeholder="0.00" />
       </div>
     </div>
+    <button class="btn-calc" onclick="calculate()">Почати розрахунок</button>
   </div>
 
   <!-- RESULT SECTION -->
   <div class="section-result" id="resultSection">
-
     <div class="result-title">Розрахунок судових витрат</div>
 
-    <div class="calc-step" id="step1">
+    <div class="calc-step">
       <div class="step-label">Крок 1 — Відсоток задоволення позову</div>
       <div class="step-formula" id="formula1"></div>
       <div class="step-value" id="value1"></div>
     </div>
 
-    <div class="calc-step" id="step2">
+    <div class="calc-step">
       <div class="step-label">Крок 2 — Сума заявлених судових витрат</div>
       <div class="step-formula" id="formula2"></div>
       <div class="step-value" id="value2"></div>
     </div>
 
-    <div class="calc-step" id="step3">
+    <div class="calc-step">
       <div class="step-label">Крок 3 — Пропорційна сума до задоволення</div>
       <div class="step-formula" id="formula3"></div>
       <div class="step-value" id="value3"></div>
@@ -359,6 +465,7 @@
       <div class="final-sub" id="finalSub"></div>
     </div>
 
+    <button class="btn-print" onclick="window.print()">Роздрукувати розрахунок</button>
   </div>
 
 </div>
@@ -383,7 +490,6 @@
     const resultSection = document.getElementById('resultSection');
     const errorMsg      = document.getElementById('errorMsg');
 
-    // Validation
     if (satisfied > claimed && claimed > 0) {
       errorMsg.classList.add('visible');
       resultSection.classList.remove('visible');
@@ -391,35 +497,30 @@
     }
     errorMsg.classList.remove('visible');
 
-    // Need all three values > 0
     if (claimed <= 0 || costs <= 0) {
       resultSection.classList.remove('visible');
+      alert('Будь ласка, заповніть усі три поля.');
       return;
     }
 
-    // ---- Calculations ----
-    const pct = claimed > 0 ? (satisfied / claimed) * 100 : 0;
+    const pct = (satisfied / claimed) * 100;
     const costsToSatisfy = costs * (pct / 100);
 
-    // Step 1
     document.getElementById('formula1').textContent =
       `(Задоволено ÷ Заявлено) × 100 = (${fmt(satisfied)} ÷ ${fmt(claimed)}) × 100`;
     document.getElementById('value1').innerHTML =
       `<span class="highlight">${fmt(pct)} %</span>`;
 
-    // Step 2
     document.getElementById('formula2').textContent =
       `Заявлені судові витрати = ₴ ${fmt(costs)}`;
     document.getElementById('value2').innerHTML =
       `<span class="highlight">₴ ${fmt(costs)}</span>`;
 
-    // Step 3
     document.getElementById('formula3').textContent =
       `₴ ${fmt(costs)} × ${fmt(pct)} % = ₴ ${fmt(costs)} × ${(pct/100).toFixed(6)}`;
     document.getElementById('value3').innerHTML =
       `<span class="highlight">₴ ${fmt(costsToSatisfy)}</span>`;
 
-    // Final
     document.getElementById('finalAmount').textContent = fmt(costsToSatisfy);
 
     let sub = '';
@@ -432,7 +533,12 @@
     }
     document.getElementById('finalSub').textContent = sub;
 
+    document.getElementById('group-claimed').setAttribute('data-print', '₴ ' + fmt(claimed));
+    document.getElementById('group-satisfied').setAttribute('data-print', '₴ ' + fmt(satisfied));
+    document.getElementById('group-costs').setAttribute('data-print', '₴ ' + fmt(costs));
+
     resultSection.classList.add('visible');
+    resultSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 </script>
 
