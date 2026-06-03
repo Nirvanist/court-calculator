@@ -7,20 +7,20 @@
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Source+Serif+4:opsz,wght@8..60,300;400;600&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --ink: #1a1a2e;
-      --ink-light: #3d3d5c;
-      --parchment: #f5f0e8;
-      --parchment-dark: #ede5d0;
-      --gold: #b8962e;
-      --gold-light: #d4af5a;
-      --costs-bg: #1a2e1a;
-      --costs-fg: #c8e6c8;
-      --costs-accent: #4caf7d;
-      --result-bg: #0d1b2a;
-      --result-fg: #b8d4f0;
-      --result-accent: #4a90d9;
-      --border: rgba(184,150,46,0.3);
-      --shadow: 0 8px 40px rgba(26,26,46,0.15);
+      --ink: #0d2b4e;
+      --ink-light: #1e5080;
+      --parchment: #fffde7;
+      --parchment-dark: #fff9c4;
+      --gold: #f9a825;
+      --gold-light: #fbc02d;
+      --costs-bg: #0a3060;
+      --costs-fg: #ffe082;
+      --costs-accent: #fdd835;
+      --result-bg: #062244;
+      --result-fg: #bbdefb;
+      --result-accent: #29b6f6;
+      --border: rgba(249,168,37,0.4);
+      --shadow: 0 8px 40px rgba(13,43,78,0.15);
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -32,8 +32,8 @@
       min-height: 100vh;
       padding: 2rem 1rem 4rem;
       background-image:
-        radial-gradient(ellipse at 20% 10%, rgba(184,150,46,0.06) 0%, transparent 50%),
-        radial-gradient(ellipse at 80% 90%, rgba(26,26,46,0.05) 0%, transparent 50%);
+        radial-gradient(ellipse at 20% 10%, rgba(249,168,37,0.08) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 90%, rgba(13,43,78,0.06) 0%, transparent 50%);
     }
 
     /* HEADER */
@@ -45,7 +45,7 @@
       border-radius: 50%;
       display: flex; align-items: center; justify-content: center;
       font-size: 2rem;
-      box-shadow: 0 0 0 4px var(--gold), 0 0 0 8px rgba(184,150,46,0.15);
+      box-shadow: 0 0 0 4px var(--gold), 0 0 0 8px rgba(249,168,37,0.18);
     }
     h1 {
       font-family: 'Playfair Display', Georgia, serif;
@@ -65,7 +65,7 @@
     }
     .divider {
       width: 120px; height: 2px;
-      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+      background: linear-gradient(90deg, transparent, var(--gold), #29b6f6, transparent);
       margin: 1rem auto 0;
     }
 
@@ -94,12 +94,12 @@
     .section-costs .currency-sign { color: var(--costs-accent); }
     .section-costs input[type="number"] {
       background: rgba(255,255,255,0.07);
-      border-color: rgba(76,175,125,0.35);
+      border-color: rgba(253,216,53,0.4);
       color: var(--costs-fg);
     }
     .section-costs input[type="number"]:focus {
       border-color: var(--costs-accent);
-      box-shadow: 0 0 0 3px rgba(76,175,125,0.15);
+      box-shadow: 0 0 0 3px rgba(253,216,53,0.2);
       background: rgba(255,255,255,0.1);
     }
 
@@ -146,7 +146,7 @@
     input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; }
     input[type="number"]:focus {
       border-color: var(--gold);
-      box-shadow: 0 0 0 3px rgba(184,150,46,0.12);
+      box-shadow: 0 0 0 3px rgba(249,168,37,0.18);
       background: #fff;
     }
 
@@ -169,7 +169,7 @@
       width: 100%;
       margin-top: 1.5rem;
       padding: 0.9rem 1.5rem;
-      background: linear-gradient(135deg, #2c5f2e, #4caf7d);
+      background: linear-gradient(135deg, #0a3060, #1565c0);
       color: #fff;
       font-family: 'Playfair Display', serif;
       font-size: 1rem;
@@ -179,9 +179,9 @@
       border-radius: 2px;
       cursor: pointer;
       transition: opacity 0.2s, transform 0.1s, box-shadow 0.2s;
-      box-shadow: 0 3px 14px rgba(76,175,125,0.3);
+      box-shadow: 0 3px 14px rgba(10,48,96,0.3);
     }
-    .btn-calc:hover { opacity: 0.9; box-shadow: 0 5px 20px rgba(76,175,125,0.4); }
+    .btn-calc:hover { opacity: 0.9; box-shadow: 0 5px 20px rgba(10,48,96,0.4); }
     .btn-calc:active { transform: scale(0.99); }
 
     .btn-print {
@@ -218,7 +218,7 @@
       text-transform: uppercase;
       letter-spacing: 0.1em;
       padding: 1.4rem 0 1rem;
-      border-bottom: 1px solid rgba(74,144,217,0.2);
+      border-bottom: 1px solid rgba(41,182,246,0.2);
       margin-bottom: 1.4rem;
       display: flex; align-items: center; gap: 0.6rem;
     }
@@ -232,7 +232,7 @@
 
     .calc-step {
       background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(74,144,217,0.15);
+      border: 1px solid rgba(41,182,246,0.15);
       border-left: 3px solid var(--result-accent);
       border-radius: 2px;
       padding: 1rem 1.2rem;
@@ -273,7 +273,7 @@
     .final-box {
       margin-top: 1.2rem;
       padding: 1.4rem 1.6rem;
-      background: linear-gradient(135deg, rgba(74,144,217,0.12), rgba(74,144,217,0.05));
+      background: linear-gradient(135deg, rgba(41,182,246,0.12), rgba(41,182,246,0.05));
       border: 1.5px solid var(--result-accent);
       border-radius: 2px;
       animation: fadeIn 0.5s 0.35s ease both;
@@ -473,8 +473,14 @@
 <p class="footer-note">
   Розрахунок відповідно до ст. 141 ЦПК України — судові витрати розподіляються пропорційно до задоволених вимог.
 </p>
+<p class="footer-note" style="margin-top:0.4rem; opacity:0.45;">версія 1.1</p>
 
 <script>
+  // Prevent mouse wheel from changing number input values
+  document.querySelectorAll('input[type="number"]').forEach(el => {
+    el.addEventListener('wheel', e => { e.preventDefault(); }, { passive: false });
+  });
+
   function fmt(n) {
     return new Intl.NumberFormat('uk-UA', {
       minimumFractionDigits: 2,
